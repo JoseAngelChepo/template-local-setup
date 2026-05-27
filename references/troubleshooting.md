@@ -16,6 +16,12 @@
 - Run `mongosh --eval 'db.runCommand({ ping: 1 })'`
 - Confirm `MONGODB_URI` host is `127.0.0.1` and port `27017`
 - Restart Mongo: `brew services restart mongodb-community@7.0`
+- If Homebrew Mongo still fails to boot (FCV/version mismatch), run manual Mongo with a project db path:
+
+```bash
+mkdir -p ~/Development/template/.mongo-data
+mongod --dbpath ~/Development/template/.mongo-data --port 27017
+```
 
 ### Port 3001 already in use
 
@@ -25,6 +31,12 @@ kill <PID>
 ```
 
 Or set `PORT=3002` in `.env` **and** update platform `NEXT_PUBLIC_API_URL` to match.
+
+### `npm` not found in PATH
+
+- Run `which node` and `which npm`
+- If Node comes from app tooling but npm is missing, normalize via `nvm` (`nvm install 22 && nvm use 22`) or Homebrew Node
+- For Homebrew on Apple Silicon, ensure `/opt/homebrew/bin` is in PATH and restart terminal
 
 ### JWT / auth oddities after copying `.env` from another project
 
@@ -42,6 +54,14 @@ Generate new `JWT_SECRET` and `JWT_REFRESH_SECRET`; old tokens will be invalid (
 ### `NEXT_PUBLIC_*` changes ignored
 
 Restart `npm run dev` — Next.js inlines public env at build/dev start.
+
+### zsh breaks URLs with `?` in curl
+
+Always quote URLs containing query params:
+
+```bash
+curl 'http://localhost:3001/api/v1/auth/username/availability?username=testuser'
+```
 
 ### Blank or stale UI
 

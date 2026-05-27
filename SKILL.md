@@ -54,7 +54,7 @@ Confirm or install:
 | **macOS** | This skill targets Mac; adapt MongoDB steps on Linux/Windows if needed |
 | **Git** | `git --version` |
 | **Node.js** | **20+** required; **22 LTS** recommended (matches backend CI). Prefer `nvm`: `nvm install 22 && nvm use 22` |
-| **npm** | Bundled with Node; use `npm ci` when `package-lock.json` exists |
+| **npm** | Bundled with Node; use `npm ci` when `package-lock.json` exists. If `npm` is not in PATH, use `nvm` or Homebrew Node and verify with `which node` + `which npm` |
 | **Homebrew** | For MongoDB via brew (or use Docker in [references/mongodb-mac.md](references/mongodb-mac.md)) |
 
 Ports must be free: **3000** (web), **3001** (API), **27017** (MongoDB).
@@ -100,6 +100,8 @@ brew services start mongodb-community@7.0
 mongosh --eval 'db.runCommand({ ping: 1 })'
 ```
 
+If Homebrew Mongo fails (for example FCV mismatch with an existing global data dir), use a **manual project-specific Mongo setup** from `references/mongodb-mac.md` (custom `--dbpath`) or switch to Docker.
+
 If `mongosh` ping succeeds, proceed. If MongoDB is not running, **stop** — the API will fail on startup.
 
 ---
@@ -140,10 +142,10 @@ npm run dev
 Verify (new terminal):
 
 ```bash
-curl -s -o /dev/null -w "%{http_code}" http://localhost:3001/api/v1/auth/username/availability?username=testuser
+curl -s 'http://localhost:3001/api/v1/health'
 ```
 
-Expect **200** or **400** (not connection refused).
+Expect **200** with `"status":"ok"` and `"database":{"status":"up"}` (not connection refused).
 
 Full env reference: [references/environment.md](references/environment.md).
 
@@ -230,9 +232,10 @@ Start **services first**, then **platform**.
 | Symptom | Likely fix |
 |---------|------------|
 | `ECONNREFUSED` on API calls | Start template-services; check port 3001 |
-| MongoDB connection error | `brew services start mongodb-community@7.0`; verify `MONGODB_URI` |
+| MongoDB connection error | Start service; if Homebrew data dir is incompatible, use manual `mongod --dbpath` setup or Docker (see `references/mongodb-mac.md`) |
 | CORS errors in browser | `CORS_ORIGIN=http://localhost:3000` in services `.env` |
 | OAuth redirect mismatch | `GOOGLE_CALLBACK_URL` and Google Console URI must match exactly |
+| `npm` command not found | Normalize PATH using `nvm` or Homebrew Node (`/opt/homebrew/bin`), then restart terminal |
 | Stale Next cache | `npm run dev:clean` in template-platform |
 | Port in use | `lsof -i :3000` / `lsof -i :3001` and stop conflicting process |
 

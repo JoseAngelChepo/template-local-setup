@@ -72,6 +72,25 @@ Stop: `docker stop template-mongo`. Start again: `docker start template-mongo`.
 
 ---
 
+## Option B2 — Manual local config (when Homebrew service fails)
+
+Use this when Homebrew Mongo cannot start because an existing global data dir is incompatible (common after major upgrades, e.g. FCV mismatch).
+
+```bash
+mkdir -p ~/Development/template/.mongo-data
+mongod --dbpath ~/Development/template/.mongo-data --port 27017
+```
+
+Then verify in another terminal:
+
+```bash
+mongosh --eval 'db.runCommand({ ping: 1 })'
+```
+
+This keeps project data isolated from Homebrew's default global data directory.
+
+---
+
 ## Option C — MongoDB Atlas (not local)
 
 For cloud-only dev, replace `MONGODB_URI` with the Atlas connection string (include credentials and `retryWrites=true`). Whitelist your IP in Atlas. This skill focuses on **local** Mongo; only suggest Atlas if the user explicitly refuses local install.
@@ -83,6 +102,7 @@ For cloud-only dev, replace `MONGODB_URI` with the Atlas connection string (incl
 | Issue | Fix |
 |-------|-----|
 | `Connection refused` on 27017 | Service not running — `brew services start mongodb-community@7.0` |
+| FCV/version mismatch after Mongo upgrade | Use project-specific `mongod --dbpath` (Option B2) or Docker, then retry |
 | Wrong architecture (Apple Silicon) | Reinstall via brew; avoid mixing Intel and ARM binaries |
 | Port 27017 busy | `lsof -i :27017` — stop duplicate `mongod` or Docker container |
 | Auth errors with local URI | Stock template uses **no auth** on localhost; do not add username/password unless you configured Mongo auth yourself |
