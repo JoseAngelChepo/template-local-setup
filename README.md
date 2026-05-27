@@ -15,13 +15,9 @@ This repo follows the [Agent Skills](https://platform.claude.com/docs/en/agents-
 
 ### Claude Code
 
-Clone and register the skill path:
+> **Set up:** <https://github.com/JoseAngelChepo/template-local-setup>
 
-```bash
-git clone https://github.com/JoseAngelChepo/template-local-setup.git
-```
-
-Add the cloned directory to your project's Claude Code skills configuration, or place it where your client loads custom skills (see [Claude Code skills docs](https://docs.anthropic.com/en/docs/claude-code/skills)).
+See [Claude Code skills](https://docs.anthropic.com/en/docs/claude-code/skills) for how skills are loaded.
 
 ### Claude.ai (custom skills)
 
