@@ -11,13 +11,17 @@ Claude **Agent Skill** for bootstrapping the template monorepo on **macOS**: clo
 
 ## Install the skill in Claude
 
-This repo follows the [Agent Skills](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview) layout: the skill lives at the repository root (`SKILL.md` + `references/`).
+This repo follows the [Agent Skills](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview) layout: `SKILL.md` at the root plus [`references/`](https://github.com/JoseAngelChepo/template-local-setup/tree/main/references).
 
-### Claude Code
+### Setting up template-local-setup for Claude Code
 
-> **Set up:** <https://github.com/JoseAngelChepo/template-local-setup>
+**In your agent’s chat, send:**
 
-See [Claude Code skills](https://docs.anthropic.com/en/docs/claude-code/skills) for how skills are loaded.
+```text
+set up https://raw.githubusercontent.com/JoseAngelChepo/template-local-setup/main/SKILL.md
+```
+
+That URL is the raw `SKILL.md` on the `main` branch (same content as in this repo). Browse the project: [github.com/JoseAngelChepo/template-local-setup](https://github.com/JoseAngelChepo/template-local-setup).
 
 ### Claude.ai (custom skills)
 
