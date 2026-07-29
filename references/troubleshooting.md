@@ -93,3 +93,5 @@ Resend vars must be set; check Resend dashboard logs. Optional for initial local
 
 - `.env` and `.env.local` must not appear in `git status`
 - If `.env` was ever committed, rotate all secrets before pushing
+- Run `npm audit` in services and `npm audit --omit=dev` in platform before handoff
+- Do not force `brace-expansion` 5 into frontend `minimatch` 3; it breaks ESLint

@@ -2,21 +2,17 @@
 name: template-local-setup
 description: >-
   Bootstraps template-platform and template-services on macOS: clone, MongoDB,
-  env, npm, localhost :3000/:3001. Use for first-time template setup or local dev.
-compatibility: >-
-  macOS. Node.js 20+ (22 recommended). Homebrew MongoDB Community or Docker.
-  Two sibling git clones. Network for npm install and git clone.
-metadata:
-  author: JoseAngelChepo
-  version: 1.0.0
-  repos:
-    platform: https://github.com/JoseAngelChepo/template-platform
-    services: https://github.com/JoseAngelChepo/template-services
+  env, npm, localhost :3000/:3001, smoke tests, builds, and dependency audits.
+  Use for first-time template setup, local development, or validating a fresh
+  clone before handoff.
 ---
 
 # Template monorepo — local setup (macOS)
 
 Guide a developer from zero to a working stack: **API on port 3001**, **web on port 3000**, **MongoDB on localhost**.
+
+Target macOS with Node.js 20+ (22 recommended), npm, two sibling Git clones,
+and either Homebrew MongoDB Community or Docker.
 
 ## Repositories
 
@@ -38,7 +34,8 @@ Copy this checklist and mark steps as you complete them:
 - [ ] 4. Configure and run template-services
 - [ ] 5. Configure and run template-platform
 - [ ] 6. Smoke-test in the browser
-- [ ] 7. (Optional) Google OAuth and Resend email
+- [ ] 7. Validate builds and dependency security
+- [ ] 8. (Optional) Google OAuth and Resend email
 ```
 
 Work **in order**. Do not start the frontend until the API responds on port 3001.
@@ -130,7 +127,7 @@ Generate secrets (example):
 openssl rand -base64 48
 ```
 
-Leave **Google** and **Resend** vars empty unless doing Step 7.
+Leave **Google** and **Resend** vars empty unless doing Step 8.
 
 ```bash
 npm ci
@@ -189,7 +186,44 @@ If sign-up fails with network errors, confirm API on 3001 and `NEXT_PUBLIC_API_U
 
 ---
 
-## Step 7 — Optional integrations
+## Step 7 — Validate before handoff
+
+Stop both development servers before running production builds.
+
+### Backend
+
+```bash
+cd template-services
+npm run typecheck
+npm run build
+npm audit
+```
+
+Expect all three commands to pass and `npm audit` to report zero
+vulnerabilities.
+
+### Frontend
+
+```bash
+cd ../template-platform
+npm run typecheck
+npm run lint
+npm run build
+npm audit --omit=dev
+```
+
+Expect all four commands to pass and the production audit to report zero
+vulnerabilities.
+
+The full frontend `npm audit` can still report a development-only
+`brace-expansion` advisory through Next.js ESLint plugins. Do not force
+`npm audit fix --force` or override `brace-expansion` 5 into `minimatch` 3:
+that combination breaks lint. Keep the production audit clean and update the
+ESLint chain when its upstream packages support the patched dependency.
+
+---
+
+## Step 8 — Optional integrations
 
 ### Google OAuth
 
