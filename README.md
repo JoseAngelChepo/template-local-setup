@@ -39,6 +39,7 @@ Copy or symlink this folder to `.cursor/skills/template-local-setup/` in your wo
 - macOS MongoDB via Homebrew (with Docker fallback in `references/`)
 - Env var tables for both repos
 - Optional Google OAuth and Resend
+- Typecheck, lint, production build, and dependency-audit handoff checks
 - Troubleshooting reference
 
 ## Structure
