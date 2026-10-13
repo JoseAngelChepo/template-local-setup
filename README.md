@@ -1,6 +1,6 @@
 # template-local-setup
 
-Claude **Agent Skill** for bootstrapping the template monorepo on **macOS**: clone [template-platform](https://github.com/JoseAngelChepo/template-platform) and [template-services](https://github.com/JoseAngelChepo/template-services), install local MongoDB, configure env vars, and run both apps on localhost.
+Claude **Agent Skill** for bootstrapping the template monorepo on **macOS**: clone [template-platform](https://github.com/JoseAngelChepo/template-platform) and [template-services](https://github.com/JoseAngelChepo/template-services), choose existing local MongoDB, MongoDB Atlas, or a requested local installation, configure env vars, and run both apps on localhost.
 
 ## Repositories
 
@@ -36,7 +36,9 @@ Copy or symlink this folder to `.cursor/skills/template-local-setup/` in your wo
 ## What the skill does
 
 - Step-by-step checklist from prerequisites through browser smoke-test
-- macOS MongoDB via Homebrew (with Docker fallback in `references/`)
+- Ask which MongoDB setup to use before installing anything; reuse local MongoDB or accept Atlas
+- Prepare an ignored `.env` and notify the user when it is ready for their connection URL
+- Optional local installation via Homebrew or Docker when requested
 - Env var tables for both repos
 - Optional Google OAuth and Resend
 - Typecheck, lint, production build, and dependency-audit handoff checks
@@ -49,6 +51,7 @@ template-local-setup/
 ├── SKILL.md                 # Main skill (required)
 ├── references/
 │   ├── mongodb-mac.md
+│   ├── mongodb-atlas.md
 │   ├── environment.md
 │   └── troubleshooting.md
 └── README.md                # This file (humans only)

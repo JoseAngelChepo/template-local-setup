@@ -2,7 +2,7 @@
 
 ## Diagnostic order
 
-1. MongoDB responding on `27017`
+1. Selected MongoDB connection responding: local service or Atlas (no local port check for Atlas)
 2. template-services listening on `3001`
 3. template-platform on `3000` with correct `NEXT_PUBLIC_API_URL`
 4. Browser network tab for failed requests
@@ -13,6 +13,9 @@
 
 ### Nest fails at startup with Mongo error
 
+For Atlas, follow [mongodb-atlas.md](mongodb-atlas.md). Do not install or restart
+local MongoDB when Atlas was selected. For a local setup:
+
 - Run `mongosh --eval 'db.runCommand({ ping: 1 })'`
 - Confirm `MONGODB_URI` host is `127.0.0.1` and port `27017`
 - Restart Mongo: `brew services restart mongodb-community@7.0`
@@ -20,7 +23,7 @@
 
 ```bash
 mkdir -p ~/Development/template/.mongo-data
-mongod --dbpath ~/Development/template/.mongo-data --port 27017
+mongod --dbpath ~/Development/template/.mongo-data --bind_ip 127.0.0.1 --port 27017
 ```
 
 ### Port 3001 already in use
@@ -93,5 +96,6 @@ Resend vars must be set; check Resend dashboard logs. Optional for initial local
 
 - `.env` and `.env.local` must not appear in `git status`
 - If `.env` was ever committed, rotate all secrets before pushing
-- Run `npm audit` in services and `npm audit --omit=dev` in platform before handoff
+- Run `npm run audit:security` in both repos and inspect full `npm audit` results before handoff
 - Do not force `brace-expansion` 5 into frontend `minimatch` 3; it breaks ESLint
+- The current development-only `braces` advisory arrives through Next ESLint/fast-glob/micromatch; recheck upstream patches instead of applying the incompatible Next ESLint 14 downgrade

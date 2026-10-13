@@ -2,11 +2,11 @@
 
 ## template-services (`.env`)
 
-Copy from `.env.example`. **Never commit** `.env`.
+Use `npm run setup-env` to generate fresh JWT secrets without overwriting an existing `.env`. **Never commit** `.env`.
 
 | Variable | Required (local) | Description |
 |----------|------------------|-------------|
-| `MONGODB_URI` | Yes | `mongodb://127.0.0.1:27017/template` for local Mac |
+| `MONGODB_URI` | Yes | Chosen local URI or MongoDB Atlas URI with a dedicated app database. If the user will enter it, leave `MONGODB_URI=` blank until supplied. |
 | `JWT_SECRET` | Yes | Access token signing — use a strong random value |
 | `JWT_REFRESH_SECRET` | Yes | Refresh token signing — different from `JWT_SECRET` |
 | `JWT_EXPIRES_IN` | No | Default `7d` |

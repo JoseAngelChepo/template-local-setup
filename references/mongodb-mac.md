@@ -1,5 +1,7 @@
 # MongoDB on macOS (template-services)
 
+Use this reference only when the user chooses an existing or new **local** MongoDB setup. Resolve that choice in `SKILL.md` first; never install MongoDB as a fallback for Atlas without the user choosing it.
+
 Default URI from `.env.example`:
 
 ```text
@@ -61,7 +63,7 @@ When Homebrew is not desired:
 
 ```bash
 docker run -d --name template-mongo \
-  -p 27017:27017 \
+  -p 127.0.0.1:27017:27017 \
   -v template-mongo-data:/data/db \
   mongo:7
 ```
@@ -78,7 +80,7 @@ Use this when Homebrew Mongo cannot start because an existing global data dir is
 
 ```bash
 mkdir -p ~/Development/template/.mongo-data
-mongod --dbpath ~/Development/template/.mongo-data --port 27017
+mongod --dbpath ~/Development/template/.mongo-data --bind_ip 127.0.0.1 --port 27017
 ```
 
 Then verify in another terminal:
@@ -91,9 +93,10 @@ This keeps project data isolated from Homebrew's default global data directory.
 
 ---
 
-## Option C — MongoDB Atlas (not local)
+## MongoDB Atlas
 
-For cloud-only dev, replace `MONGODB_URI` with the Atlas connection string (include credentials and `retryWrites=true`). Whitelist your IP in Atlas. This skill focuses on **local** Mongo; only suggest Atlas if the user explicitly refuses local install.
+Atlas is an equal setup option. Use [mongodb-atlas.md](mongodb-atlas.md) and skip
+local installation, service startup, and port 27017 checks.
 
 ---
 
